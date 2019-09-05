@@ -11,3 +11,5 @@ int main()
 			cout<<endl;
 	}
 }
+
+// 33 to 126 are printable characters

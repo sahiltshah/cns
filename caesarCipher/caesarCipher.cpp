@@ -2,60 +2,56 @@
 using namespace std;
 
 // 33 to 126 are printable characters
+int start=33,end=126;
+string basetext,ciphertext;
 
 string encrypt(string s,int key)
 {
-	string ans=s;
+	ciphertext=basetext;
 	key=key%94;
-	int val;
-	for(int i=0;i<s.length();i++)
-	{
-		val=ans[i]+key;
-		if(val>126)
-			val-=94;
-		ans[i]=val;
-	}
-	return ans;
+
+	if(key==0) return s;
+
+	ciphertext=ciphertext.substr(key,ciphertext.size())+ciphertext.substr(0,key);
+
+	for(int i=0;i<s.size();i++)
+		s[i]=ciphertext[s[i]-start];
+	return s;
 }
+
 
 string decrypt(string s,int key)
 {
-	string ans=s;
 	key=key%94;
-	int val;
-	for(int i=0;i<s.length();i++)
-	{
-		val=ans[i]-key;
-		if(val<33)
-			val=93+val;
-		ans[i]=val;
-	}
-	return ans;
+	key=94-key;	
+	return encrypt(s,key);
 }
 
-void check_encrypt()
+void check_program() // function to check the cipher in differet
 {
 	string s="sahil";
-	char a=33,b=126;
+	cout<<"ASCII 33 to 126 are printable characters thus total char: "<<(126-33+1);
+	cout<<"\nbase string is: "<<s<<endl;
+	cout<<"Key | BaseString -> Encrypted -> Decrypted"<<endl;
 	
-	for(int key=0;key<=110;key++)
-		cout<<key<<" "<<encrypt(s,key)<<endl;
-}
-
-void check_program()
-{
-	string s="sahil";
+	
 	for(int i=0;i<=110;i++)
 	{
-		cout<<i<<" "<<decrypt(encrypt(s,i),i)<<endl;
+		cout<<i<<" | "<<s<<" -> "<<encrypt(s,i)<<" -> "<<decrypt(encrypt(s,i),i)<<endl;
 	}
+	
 }
 
 
 
 int main()
 {
-	//cout<<decrypt("%qxy|",110)<<endl;
+	int count =0;
+	basetext.resize((end-start+1),'#');
+	ciphertext.resize((end-start+1),'#');
+	for(int i=33;i<=126;i++)
+		basetext[count++]=i;
+	
 	check_program();
 	return 0;
 }

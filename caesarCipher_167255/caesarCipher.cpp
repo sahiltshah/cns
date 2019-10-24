@@ -2,7 +2,7 @@
 using namespace std;
 
 // 33 to 126 are printable characters
-int start=33,end=126;
+int start=33,endv=126;
 string basetext,ciphertext;
 
 string encrypt(string s,int key)
@@ -47,8 +47,8 @@ void check_program() // function to check the cipher in differet
 int main()
 {
 	int count =0;
-	basetext.resize((end-start+1),'#');
-	ciphertext.resize((end-start+1),'#');
+	basetext.resize((endv-start+1),'#');
+	ciphertext.resize((endv-start+1),'#');
 	for(int i=33;i<=126;i++)
 		basetext[count++]=i;
 	

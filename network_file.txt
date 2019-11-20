@@ -1,0 +1,718 @@
+RSA Algorithm in Cryptography
+
+
+# Write Python3 code here 
+from decimal import Decimal 
+  
+def gcd(a,b): 
+    if b==0: 
+        return a 
+    else: 
+        return gcd(b,a%b) 
+p = int(input('Enter the value of p = ')) 
+q = int(input('Enter the value of q = ')) 
+no = int(input('Enter the value of text = ')) 
+n = p*q 
+t = (p-1)*(q-1) 
+  
+for e in range(2,t): 
+    if gcd(e,t)== 1: 
+        break
+  
+  
+for i in range(1,10): 
+    x = 1 + i*t 
+    if x % e == 0: 
+        d = int(x/e) 
+        break
+ctt = Decimal(0) 
+ctt =pow(no,e) 
+ct = ctt % n 
+  
+dtt = Decimal(0) 
+dtt = pow(ct,d) 
+dt = dtt % n 
+  
+print('n = '+str(n)+' e = '+str(e)+' t = '+str(t)+' d = '+str(d)+' cipher text = '+str(ct)+' decrypted text = '+str(dt)) 
+
+
+
+
+// C program for RSA asymmetric cryptographic 
+// algorithm. For demonstration values are 
+// relatively small compared to practical 
+// application 
+#include<stdio.h> 
+#include<math.h> 
+  
+// Returns gcd of a and b 
+int gcd(int a, int h) 
+{ 
+    int temp; 
+    while (1) 
+    { 
+        temp = a%h; 
+        if (temp == 0) 
+          return h; 
+        a = h; 
+        h = temp; 
+    } 
+} 
+  
+// Code to demonstrate RSA algorithm 
+int main() 
+{ 
+    // Two random prime numbers 
+    double p = 3; 
+    double q = 7; 
+  
+    // First part of public key: 
+    double n = p*q; 
+  
+    // Finding other part of public key. 
+    // e stands for encrypt 
+    double e = 2; 
+    double phi = (p-1)*(q-1); 
+    while (e < phi) 
+    { 
+        // e must be co-prime to phi and 
+        // smaller than phi. 
+        if (gcd(e, phi)==1) 
+            break; 
+        else
+            e++; 
+    } 
+  
+    // Private key (d stands for decrypt) 
+    // choosing d such that it satisfies 
+    // d*e = 1 + k * totient 
+    int k = 2;  // A constant value 
+    double d = (1 + (k*phi))/e; 
+  
+    // Message to be encrypted 
+    double msg = 20; 
+  
+    printf("Message data = %lf", msg); 
+  
+    // Encryption c = (msg ^ e) % n 
+    double c = pow(msg, e); 
+    c = fmod(c, n); 
+    printf("\nEncrypted data = %lf", c); 
+  
+    // Decryption m = (c ^ d) % n 
+    double m = pow(c, d); 
+    m = fmod(m, n); 
+    printf("\nOriginal Message Sent = %lf", m); 
+  
+    return 0; 
+} 
+
+
+
+
+
+mechanism:
+
+>> Generating Public Key :
+
+Select two prime no's. Suppose P = 53 and Q = 59.
+Now First part of the Public key  : n = P*Q = 3127.
+
+ We also need a small exponent say e : 
+But e Must be 
+
+
+    An integer.
+
+    Not be a factor of n.
+     
+    1 < e < Φ(n) [Φ(n) is discussed below], 
+    Let us now consider it to be equal to 3.
+
+
+    
+Our Public Key is made of n and e
+
+
+
+
+>> Generating Private Key :
+
+We need to calculate Φ(n) :
+Such that Φ(n) = (P-1)(Q-1)     
+      so,  Φ(n) = 3016
+
+    
+Now calculate Private Key, d : 
+d = (k*Φ(n) + 1) / e for some integer k
+For k = 2, value of d is 2011.
+
+Now we are ready with our – Public Key ( n = 3127 and e = 3) and Private Key(d = 2011)
+
+Now we will encrypt “HI” :
+
+Convert letters to numbers : H  = 8 and I = 9
+
+    
+Thus Encrypted Data c = 89e mod n. 
+Thus our Encrypted Data comes out to be 1394
+
+
+Now we will decrypt 1394 : 
+    
+Decrypted Data = cd mod n. 
+Thus our Encrypted Data comes out to be 89
+
+8 = H and I = 9 i.e. "HI".
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+diffie hellman
+
+
+Implementation of Diffie-Hellman Algorithm
+
+Background
+
+Elliptic Curve Cryptography (ECC) is an approach to public-key cryptography, based on the algebraic structure of elliptic curves over finite fields. ECC requires a smaller key as compared to non-ECC cryptography to provide equivalent security (a 256-bit ECC security have an equivalent security attained by 3072-bit RSA cryptography).
+
+For a better understanding of Elliptic Curve Cryptography, it is very important to understand the basics of Elliptic Curve. An elliptic curve is a planar algebraic curve defined by an equation of the form
+
+
+y^2 = x^3 + ax + b
+
+where ‘a’ is the co-efficient of x and ‘b’ is the constant of the equation
+
+The curve is non-singular; that is its graph has no cusps or self-intersections (when the characteristic of the
+co-efficient field is equal to 2 or 3).
+In general, an elliptic curve looks like as shown below. Elliptic curves could intersect atmost 3 points when a straight line is drawn intersecting the curve. As we can see that elliptic curve is symmetric about the x-axis, this property plays a key role in the algorithm.
+
+Elliptic Curve
+
+Diffie-Hellman algorithm
+
+The Diffie-Hellman algorithm is being used to establish a shared secret that can be used for secret
+communications while exchanging data over a public network using the elliptic curve to generate points and get the secret key using the parameters.
+
+    For the sake of simplicity and practical implementation of the algorithm, we will consider only 4 variables one prime P and G (a primitive root of P) and two private values a and b.
+    P and G are both publicly available numbers. Users (say Alice and Bob) pick private values a and b and they generate a key and exchange it publicly, the opposite person received the key and from that generates a secret key after which they have the same secret key to encrypt.
+
+Step by Step Explanation
+Alice 	Bob
+Public Keys available = P, G 	Public Keys available = P, G
+Private Key Selected = a 	Private Key Selected = b
+Key generated = x = G^a mod P 	Key generated = y = G^b mod P
+Exchange of generated keys takes place
+Key received = y 	key received = x
+Generated Secret Key = k_a = y^a mod P 	Generated Secret Key = k_b = x^b mod P
+Algebraically it can be shown that k_a = k_b
+Users now have a symmetric secret key to encrypt
+
+Example
+
+Step 1: Alice and Bob get public numbers P = 23, G = 9
+
+Step 2: Alice selected a private key a = 4 and
+        Bob selected a private key b = 3
+
+Step 3: Alice and Bob compute public values
+Alice:    x =(9^4 mod 23) = (6561 mod 23) = 6
+        Bob:    y = (9^3 mod 23) = (729 mod 23)  = 16
+
+Step 4: Alice and Bob exchange public numbers
+
+Step 5: Alice receives public key y =16 and
+        Bob receives public key x = 6
+
+Step 6: Alice and Bob compute symmetric keys
+        Alice:  ka = y^a mod p = 65536 mod 23 = 9
+        Bob:    kb = x^b mod p = 216 mod 23 = 9
+
+Step 7: 9 is the shared secret.
+
+Implementation:
+filter_none
+
+edit
+
+play_arrow
+
+brightness_4
+/* This program calculates the Key for two persons  
+using the Diffie-Hellman Key exchange algorithm */
+#include<stdio.h> 
+#include<math.h> 
+  
+// Power function to return value of a ^ b mod P 
+long long int power(long long int a, long long int b, 
+                                     long long int P) 
+{  
+    if (b == 1) 
+        return a; 
+  
+    else
+        return (((long long int)pow(a, b)) % P); 
+} 
+  
+//Driver program 
+int main() 
+{ 
+    long long int P, G, x, a, y, b, ka, kb;  
+      
+    // Both the persons will be agreed upon the  
+        // public keys G and P  
+    P = 23; // A prime number P is taken 
+    printf("The value of P : %lld\n", P);  
+  
+    G = 9; // A primitve root for P, G is taken 
+    printf("The value of G : %lld\n\n", G);  
+  
+    // Alice will choose the private key a  
+    a = 4; // a is the chosen private key  
+    printf("The private key a for Alice : %lld\n", a); 
+    x = power(G, a, P); // gets the generated key 
+      
+    // Bob will choose the private key b 
+    b = 3; // b is the chosen private key 
+    printf("The private key b for Bob : %lld\n\n", b); 
+    y = power(G, b, P); // gets the generated key 
+  
+    // Generating the secret key after the exchange 
+        // of keys 
+    ka = power(y, a, P); // Secret key for Alice 
+    kb = power(x, b, P); // Secret key for Bob 
+      
+    printf("Secret key for the Alice is : %lld\n", ka); 
+    printf("Secret Key for the Bob is : %lld\n", kb); 
+      
+    return 0; 
+} 
+
+Output
+
+The value of P : 23
+The value of G : 9
+
+The private key a for Alice : 4
+The private key b for Bob : 3
+
+Secret key for the Alice is : 9
+Secret Key for the Bob is : 9
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+ElGamal Encryption Algorithm
+
+ElGamal encryption is an public-key cryptosystem. It uses asymmetric key encryption for communicating between two parties and encrypting the message.
+This cryptosystem is based on the difficulty of finding discrete logarithm in a cyclic group that is even if we know g^a and g^k, it is extremely difficult to compute g^ak.
+
+Idea of ElGamal cryptosystem
+Suppose Alice wants to communicate to Bob.
+
+    Bob generates public and private key :
+        Bob chooses a very large number q and a cyclic group F.q.
+        From the cyclic group F.q, he choose any element g and
+        an element a such that gcd(a, q) = 1.
+        Then he computes h = g^a.
+        Bob publishes F, h = g^a, q and g as his public key and retains a as private key.
+    Alice encrypts data using Bob’s public key :
+        Alice selects an element k from cyclic group F
+        such that gcd(k, q) = 1.
+        Then she computes p = g^k and s = h^k = g^ak.
+        She multiples s with M.
+        Then she sends (p, M*s) = (gk, M*s).
+    Bob decrypts the message :
+        Bob calculates s′ = p^a = g^ak.
+        He divides M*s by s′ to obtain M as s = s′.
+
+Following is the implementation of ElGamal cryptosystem in Python
+
+
+
+
+# Python program to illustrate ElGamal encryption 
+  
+import random  
+from math import pow
+  
+a = random.randint(2, 10) 
+  
+def gcd(a, b): 
+    if a < b: 
+        return gcd(b, a) 
+    elif a % b == 0: 
+        return b; 
+    else: 
+        return gcd(b, a % b) 
+  
+# Generating large random numbers 
+def gen_key(q): 
+  
+    key = random.randint(pow(10, 20), q) 
+    while gcd(q, key) != 1: 
+        key = random.randint(pow(10, 20), q) 
+  
+    return key 
+  
+# Modular exponentiation 
+def power(a, b, c): 
+    x = 1
+    y = a 
+  
+    while b > 0: 
+        if b % 2 == 0: 
+            x = (x * y) % c; 
+        y = (y * y) % c 
+        b = int(b / 2) 
+  
+    return x % c 
+  
+# Asymmetric encryption 
+def encrypt(msg, q, h, g): 
+  
+    en_msg = [] 
+  
+    k = gen_key(q)# Private key for sender 
+    s = power(h, k, q) 
+    p = power(g, k, q) 
+      
+    for i in range(0, len(msg)): 
+        en_msg.append(msg[i]) 
+  
+    print("g^k used : ", p) 
+    print("g^ak used : ", s) 
+    for i in range(0, len(en_msg)): 
+        en_msg[i] = s * ord(en_msg[i]) 
+  
+    return en_msg, p 
+  
+def decrypt(en_msg, p, key, q): 
+  
+    dr_msg = [] 
+    h = power(p, key, q) 
+    for i in range(0, len(en_msg)): 
+        dr_msg.append(chr(int(en_msg[i]/h))) 
+          
+    return dr_msg 
+  
+# Driver code 
+def main(): 
+  
+    msg = 'encryption'
+    print("Original Message :", msg) 
+  
+    q = random.randint(pow(10, 20), pow(10, 50)) 
+    g = random.randint(2, q) 
+  
+    key = gen_key(q)# Private key for receiver 
+    h = power(g, key, q) 
+    print("g used : ", g) 
+    print("g^a used : ", h) 
+  
+    en_msg, p = encrypt(msg, q, h, g) 
+    dr_msg = decrypt(en_msg, p, key, q) 
+    dmsg = ''.join(dr_msg) 
+    print("Decrypted Message :", dmsg); 
+  
+  
+if __name__ == '__main__': 
+    main() 
+
+Sample Output :
+
+Original Message : encryption
+g used :  5860696954522417707188952371547944035333315907890
+g^a used :  4711309755639364289552454834506215144653958055252
+g^k used :  12475188089503227615789015740709091911412567126782
+g^ak used :  39448787632167136161153337226654906357756740068295
+Decrypted Message : encryption
+
+
+
+
+
+
+In this cryptosystem, original message M is masked by multiplying g^ak to it. To remove the mask, a clue is given in form of g^k. Unless someone knows a, he will not be able to retrieve M. This is because of finding discrete log in an cyclic group is difficult and simplying knowing g^a and g^k is not good enough to compute g^ak.
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+// C++ program to illustrate Rail Fence Cipher 
+// Encryption and Decryption 
+#include <bits/stdc++.h> 
+using namespace std; 
+  
+// function to encrypt a message 
+string encryptRailFence(string text, int key) 
+{ 
+    // create the matrix to cipher plain text 
+    // key = rows , length(text) = columns 
+    char rail[key][(text.length())]; 
+  
+    // filling the rail matrix to distinguish filled 
+    // spaces from blank ones 
+    for (int i=0; i < key; i++) 
+        for (int j = 0; j < text.length(); j++) 
+            rail[i][j] = '\n'; 
+  
+    // to find the direction 
+    bool dir_down = false; 
+    int row = 0, col = 0; 
+  
+    for (int i=0; i < text.length(); i++) 
+    { 
+        // check the direction of flow 
+        // reverse the direction if we've just 
+        // filled the top or bottom rail 
+        if (row == 0 || row == key-1) 
+            dir_down = !dir_down; 
+  
+        // fill the corresponding alphabet 
+        rail[row][col++] = text[i]; 
+  
+        // find the next row using direction flag 
+        dir_down?row++ : row--; 
+    } 
+  
+    //now we can construct the cipher using the rail matrix 
+    string result; 
+    for (int i=0; i < key; i++) 
+        for (int j=0; j < text.length(); j++) 
+            if (rail[i][j]!='\n') 
+                result.push_back(rail[i][j]); 
+  
+    return result; 
+} 
+  
+// This function receives cipher-text and key 
+// and returns the original text after decryption 
+string decryptRailFence(string cipher, int key) 
+{ 
+    // create the matrix to cipher plain text 
+    // key = rows , length(text) = columns 
+    char rail[key][cipher.length()]; 
+  
+    // filling the rail matrix to distinguish filled 
+    // spaces from blank ones 
+    for (int i=0; i < key; i++) 
+        for (int j=0; j < cipher.length(); j++) 
+            rail[i][j] = '\n'; 
+  
+    // to find the direction 
+    bool dir_down; 
+  
+    int row = 0, col = 0; 
+  
+    // mark the places with '*' 
+    for (int i=0; i < cipher.length(); i++) 
+    { 
+        // check the direction of flow 
+        if (row == 0) 
+            dir_down = true; 
+        if (row == key-1) 
+            dir_down = false; 
+  
+        // place the marker 
+        rail[row][col++] = '*'; 
+  
+        // find the next row using direction flag 
+        dir_down?row++ : row--; 
+    } 
+  
+    // now we can construct the fill the rail matrix 
+    int index = 0; 
+    for (int i=0; i<key; i++) 
+        for (int j=0; j<cipher.length(); j++) 
+            if (rail[i][j] == '*' && index<cipher.length()) 
+                rail[i][j] = cipher[index++]; 
+  
+  
+    // now read the matrix in zig-zag manner to construct 
+    // the resultant text 
+    string result; 
+  
+    row = 0, col = 0; 
+    for (int i=0; i< cipher.length(); i++) 
+    { 
+        // check the direction of flow 
+        if (row == 0) 
+            dir_down = true; 
+        if (row == key-1) 
+            dir_down = false; 
+  
+        // place the marker 
+        if (rail[row][col] != '*') 
+            result.push_back(rail[row][col++]); 
+  
+        // find the next row using direction flag 
+        dir_down?row++: row--; 
+    } 
+    return result; 
+} 
+  
+//driver program to check the above functions 
+int main() 
+{ 
+    cout << encryptRailFence("attack at once", 2) << endl; 
+    cout << encryptRailFence("GeeksforGeeks ", 3) << endl; 
+    cout << encryptRailFence("defend the east wall", 3) << endl; 
+  
+    //Now decryption of the same cipher-text 
+    cout << decryptRailFence("GsGsekfrek eoe",3) << endl; 
+    cout << decryptRailFence("atc toctaka ne",2) << endl; 
+    cout << decryptRailFence("dnhaweedtees alf tl",3) << endl; 
+  
+    return 0; 
+} 
+
+
+
+
+
+
+# Python3 program to illustrate  
+# Rail Fence Cipher Encryption 
+# and Decryption 
+  
+# function to encrypt a message 
+def encryptRailFence(text, key): 
+  
+    # create the matrix to cipher  
+    # plain text key = rows ,  
+    # length(text) = columns 
+    # filling the rail matrix  
+    # to distinguish filled  
+    # spaces from blank ones 
+    rail = [['\n' for i in range(len(text))] 
+                  for j in range(key)] 
+      
+    # to find the direction 
+    dir_down = False
+    row, col = 0, 0
+      
+    for i in range(len(text)): 
+          
+        # check the direction of flow 
+        # reverse the direction if we've just 
+        # filled the top or bottom rail 
+        if (row == 0) or (row == key - 1): 
+            dir_down = not dir_down 
+          
+        # fill the corresponding alphabet 
+        rail[row][col] = text[i] 
+        col += 1
+          
+        # find the next row using 
+        # direction flag 
+        if dir_down: 
+            row += 1
+        else: 
+            row -= 1
+    # now we can construct the cipher  
+    # using the rail matrix 
+    result = [] 
+    for i in range(key): 
+        for j in range(len(text)): 
+            if rail[i][j] != '\n': 
+                result.append(rail[i][j]) 
+    return("" . join(result)) 
+      
+# This function receives cipher-text  
+# and key and returns the original  
+# text after decryption 
+def decryptRailFence(cipher, key): 
+  
+    # create the matrix to cipher  
+    # plain text key = rows ,  
+    # length(text) = columns 
+    # filling the rail matrix to  
+    # distinguish filled spaces 
+    # from blank ones 
+    rail = [['\n' for i in range(len(cipher))]  
+                  for j in range(key)] 
+      
+    # to find the direction 
+    dir_down = None
+    row, col = 0, 0
+      
+    # mark the places with '*' 
+    for i in range(len(cipher)): 
+        if row == 0: 
+            dir_down = True
+        if row == key - 1: 
+            dir_down = False
+          
+        # place the marker 
+        rail[row][col] = '*'
+        col += 1
+          
+        # find the next row  
+        # using direction flag 
+        if dir_down: 
+            row += 1
+        else: 
+            row -= 1
+              
+    # now we can construct the  
+    # fill the rail matrix 
+    index = 0
+    for i in range(key): 
+        for j in range(len(cipher)): 
+            if ((rail[i][j] == '*') and
+               (index < len(cipher))): 
+                rail[i][j] = cipher[index] 
+                index += 1
+          
+    # now read the matrix in  
+    # zig-zag manner to construct 
+    # the resultant text 
+    result = [] 
+    row, col = 0, 0
+    for i in range(len(cipher)): 
+          
+        # check the direction of flow 
+        if row == 0: 
+            dir_down = True
+        if row == key-1: 
+            dir_down = False
+              
+        # place the marker 
+        if (rail[row][col] != '*'): 
+            result.append(rail[row][col]) 
+            col += 1
+              
+        # find the next row using 
+        # direction flag 
+        if dir_down: 
+            row += 1
+        else: 
+            row -= 1
+    return("".join(result)) 
+  
+# Driver code 
+if __name__ == "__main__": 
+    print(encryptRailFence("attack at once", 2)) 
+    print(encryptRailFence("GeeksforGeeks ", 3)) 
+    print(encryptRailFence("defend the east wall", 3)) 
+      
+    # Now decryption of the 
+    # same cipher-text 
+    print(decryptRailFence("GsGsekfrek eoe", 3)) 
+    print(decryptRailFence("atc toctaka ne", 2)) 
+    print(decryptRailFence("dnhaweedtees alf tl", 3)) 
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
